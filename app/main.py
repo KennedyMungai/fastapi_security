@@ -1,0 +1,18 @@
+"""The entrypoint to the application"""
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get(
+    "/", 
+    tags=["root"], 
+    name="Root", 
+    description="Root of the API"
+    )
+async def root() -> dict[str, str]:
+    """The root of the API
+
+    Returns:
+        dict[str, str]: A dict with the words hello world
+    """
+    return {"Hello":"World"}
