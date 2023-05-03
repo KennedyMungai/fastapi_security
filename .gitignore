@@ -1,0 +1,3 @@
+fastapi_security/
+__pycache__/
+.env
