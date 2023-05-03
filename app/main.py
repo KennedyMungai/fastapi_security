@@ -1,7 +1,10 @@
 """The entrypoint to the application"""
 from fastapi import FastAPI
+from app.security_endpoint import security_endpoint
 
 app = FastAPI()
+
+app.include_router(security_endpoint)
 
 @app.get(
     "/", 
