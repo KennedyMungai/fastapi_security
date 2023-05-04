@@ -1,8 +1,8 @@
 """The models file"""
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from pydantic import BaseModel, EmailStr, Field
-from tortoise import Model, fields
+from tortoise import Model, fields, timezone
 
 
 class UserBase(BaseModel):
@@ -57,8 +57,16 @@ class UserTortoise(Model):
         """The meta subclass for the UserTortoise model
         """
         table = "users"
-        
-    
+
+
+def get_expiration_date(duration_seconds: int = 86400) -> datetime:
+    """Defined the function for getting expiration dates
+
+    Returns:
+        datetime: The data type for time
+    """
+    return timezone.now() + timedelta(seconds = duration_seconds)
+
 class AccessToken(BaseModel):
     """The access token schema
 
