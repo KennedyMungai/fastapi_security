@@ -1,15 +1,16 @@
 """The entrypoint to the application"""
+from typing import cast
+
 from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from tortoise import timezone
+from tortoise.exceptions import DoesNotExist
 
 from app.security_endpoint import security_endpoint
+from auth.authentication import (AccessToken, AccessTokenTortoise,
+                                 authenticate, create_access_token)
 from auth.password import get_password_hash
 from models.models import User, UserCreate, UserTortoise
-from auth.authentication import authenticate, create_access_token
-from typing import cast
-from tortoise.exceptions import DoesNotExist
-from auth.authentication import AccessToken, AccessTokenTortoise
 
 app = FastAPI()
 
@@ -83,6 +84,17 @@ async def create_token(form_data: OAuth2PasswordRequestForm = Depends(OAuth2Pass
 
 
 async def get_current_user(token: str = Depends(OAuth2PasswordBearer(tokenUrl = "/token"))) -> UserTortoise:
+    """This is a function that gets the current user logged in to the application
+
+    Args:
+        token (str, optional): The access token for the user. Defaults to Depends(OAuth2PasswordBearer(tokenUrl = "/token")).
+
+    Raises:
+        HTTPException: The exception handling class for the fastapi endpoints
+
+    Returns:
+        UserTortoise: The template for the User data using the tortoise ORM
+    """
     try:
         access_token: AccessTokenTortoise = await AccessTokenTortoise.get(access_token=token, expiration_date__gte=timezone.now()).prefetch_related('user')
 
