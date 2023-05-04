@@ -82,3 +82,17 @@ class AccessToken(BaseModel):
     class Config:
         """The configuration subclass for the AccessToken model"""
         orm_mode = True
+        
+
+class AccessTokenTortoise(Model):
+    """The Access Toekn model for tortoise
+
+    Args:
+        Model (Model): Tortoise stuff
+    """
+    access_token = fields.CharField(pk=True, max_length=255)
+    user = fields.ForeignKeyField("models.UserTortoise", null=False)
+    expiration_date = fields.DatetimeField(null=False)
+    
+    class Meta:
+        table = "access_tokens"
