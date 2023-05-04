@@ -10,3 +10,13 @@ class UserBase(BaseModel):
         """The configuration subclass for the User base model
         """
         orm_mode = True
+
+
+
+class UserCreate(UserBase):
+    """The UserCreate Schema
+
+    Args:
+        UserBase (BaseModel): The base class for the users
+    """
+    password: str
