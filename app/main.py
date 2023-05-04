@@ -2,6 +2,7 @@
 from typing import cast
 
 from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from tortoise import timezone
 from tortoise.exceptions import DoesNotExist
@@ -10,10 +11,17 @@ from app.security_endpoint import security_endpoint
 from auth.authentication import (AccessToken, AccessTokenTortoise,
                                  authenticate, create_access_token)
 from auth.password import get_password_hash
-from models.models import User, UserCreate, UserTortoise, UserDb
+from models.models import User, UserCreate, UserDb, UserTortoise
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['https://localhost:8000'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*']
+)
 
 @app.get(
     "/",
