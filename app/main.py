@@ -1,7 +1,7 @@
 """The entrypoint to the application"""
 from fastapi import FastAPI, status, HTTPException
 from app.security_endpoint import security_endpoint
-from models.models import UserCreate, User, UserDb, UserTortoise
+from models.models import UserCreate, User, UserTortoise
 from auth.password import get_password_hash
 
 app = FastAPI()
