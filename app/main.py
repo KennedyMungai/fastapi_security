@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.security_endpoint import security_endpoint
 from auth.password import get_password_hash
 from models.models import User, UserCreate, UserTortoise
+from auth.authentication import authenticate, create_access_token
 
 app = FastAPI()
 
