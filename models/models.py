@@ -1,5 +1,7 @@
 """The models file"""
 from pydantic import BaseModel, EmailStr
+from tortoise.models import Model
+from tortoise import fields, timezone
 
 
 class UserBase(BaseModel):
@@ -38,3 +40,17 @@ class UserDb(User):
         User (UserBase): The schema for the data stored in the database
     """
     hashed_password: str
+
+
+class UserTortoise(Model):
+    """The User Tortoise model
+
+    Args:
+        Model (_type_): No idea
+    """
+    id = fields.IntField(pk=True, generated = True)
+    email = fields.CharField(max_length=255, unique=True, index= True, null=False)
+    hashed_password = fields.CharField(max_length=255, null=False)
+    
+    class Meta:
+        table = "users"
