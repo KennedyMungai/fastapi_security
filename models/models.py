@@ -53,4 +53,6 @@ class UserTortoise(Model):
     hashed_password = fields.CharField(max_length=255, null=False)
     
     class Meta:
+        """The meta subclass for the UserTortoise model
+        """
         table = "users"
