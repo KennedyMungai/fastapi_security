@@ -20,3 +20,12 @@ class UserCreate(UserBase):
         UserBase (BaseModel): The base class for the users
     """
     password: str
+    
+    
+class User(UserBase):
+    """The User schema
+
+    Args:
+        UserBase (BaseModel): The schema for the users
+    """
+    id: int
