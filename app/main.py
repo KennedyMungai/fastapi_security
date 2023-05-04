@@ -10,7 +10,7 @@ from app.security_endpoint import security_endpoint
 from auth.authentication import (AccessToken, AccessTokenTortoise,
                                  authenticate, create_access_token)
 from auth.password import get_password_hash
-from models.models import User, UserCreate, UserTortoise
+from models.models import User, UserCreate, UserTortoise, UserDb
 
 app = FastAPI()
 
@@ -109,3 +109,25 @@ async def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token"
             )
+        
+        
+
+@app.get(
+    "/protected-route", 
+    name="The protected route", 
+    description="The protected route for the application", 
+    tags=['Users'], 
+    response_model=User
+    )
+async def protected_route(
+    user: UserDb = Depends(get_current_user)
+    ):
+    """The protected route for the application
+
+    Args:
+        user (UserDb, optional): The user to get the data from. Defaults to Depends(get_current_user).
+
+    Returns:
+        User: The user data
+    """
+    return User.from_orm(user)
