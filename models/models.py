@@ -1,7 +1,7 @@
 """The models file"""
 from pydantic import BaseModel, EmailStr
-from tortoise.models import Model
-from tortoise import fields, timezone
+from tortoise import fields
+from tortoise import Model
 
 
 class UserBase(BaseModel):
