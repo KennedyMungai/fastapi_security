@@ -20,8 +20,8 @@ class UserCreate(UserBase):
         UserBase (BaseModel): The base class for the users
     """
     password: str
-    
-    
+
+
 class User(UserBase):
     """The User schema
 
@@ -32,7 +32,7 @@ class User(UserBase):
     
     
 class UserDb(User):
-    """The Schema for tyhe data to be stored in the database
+    """The Schema for the data to be stored in the database
 
     Args:
         User (UserBase): The schema for the data stored in the database
