@@ -53,12 +53,15 @@ async def register(user: UserCreate) -> User:
     try:
         user_tortoise = await UserTortoise.create(**user.dict(), hashed_password=hashed_password)
     except:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already exists")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, 
+            detail="User already exists"
+            )
     
     return User.from_orm(user_tortoise)
 
 
-@app.post("/token")
+@app.post("/token", name="The token endpoint", description="The endpoint that provides the token for the application", status_code=status.HTTP_200_OK, tags=['Users'])
 async def create_token(form_data: OAuth2PasswordRequestForm = Depends(OAuth2PasswordRequestForm)):
     """The token creation endpoint
 
@@ -69,7 +72,7 @@ async def create_token(form_data: OAuth2PasswordRequestForm = Depends(OAuth2Pass
         HTTPException: The exception class for fastapi exceptions
 
     Returns:
-        dict: A dcitionary of the access token and the token type (In this case it is the bearer token)
+        dict: A dictionary of the access token and the token type (In this case it is the bearer token)
     """
     email = form_data.username
     password = form_data.password
@@ -83,7 +86,9 @@ async def create_token(form_data: OAuth2PasswordRequestForm = Depends(OAuth2Pass
     return {"access_token": token.access_token, "token_type": "bearer"}
 
 
-async def get_current_user(token: str = Depends(OAuth2PasswordBearer(tokenUrl = "/token"))) -> UserTortoise:
+async def get_current_user(
+    token: str = Depends(OAuth2PasswordBearer(tokenUrl = "/token"))
+    ) -> UserTortoise:
     """This is a function that gets the current user logged in to the application
 
     Args:
