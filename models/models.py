@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from pydantic import BaseModel, EmailStr, Field
 from tortoise import Model, fields, timezone
 
+from auth.password import generate_token
+
 
 class UserBase(BaseModel):
     """The base model for the user"""
@@ -65,7 +67,7 @@ def get_expiration_date(duration_seconds: int = 86400) -> datetime:
     Returns:
         datetime: The data type for time
     """
-    return timezone.now() + timedelta(seconds = duration_seconds)
+    return timezone.now() + timedelta(seconds = duration_seconds)   
 
 class AccessToken(BaseModel):
     """The access token schema
