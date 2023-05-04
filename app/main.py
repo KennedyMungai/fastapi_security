@@ -1,11 +1,15 @@
 """The entrypoint to the application"""
 from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from tortoise import timezone
 
 from app.security_endpoint import security_endpoint
 from auth.password import get_password_hash
 from models.models import User, UserCreate, UserTortoise
 from auth.authentication import authenticate, create_access_token
+from typing import cast
+from tortoise.exceptions import DoesNotExist
+from auth.authentication import AccessToken, AccessTokenTortoise
 
 app = FastAPI()
 
@@ -76,3 +80,12 @@ async def create_token(form_data: OAuth2PasswordRequestForm = Depends(OAuth2Pass
     token = await create_access_token(user)
     
     return {"access_token": token.access_token, "token_type": "bearer"}
+
+
+async def get_current_user(token: str = Depends(OAuth2PasswordBearer(tokenUrl = "/token"))) -> UserTortoise:
+    try:
+        access_token: AccessTokenTortoise = await AccessTokenTortoise.get(access_token=token, expiration_date__gte=timezone.now()).prefetch_related('user')
+
+        return cast(UserTortoise, access_token.user)
+    except DoesNotExist:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
