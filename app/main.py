@@ -55,6 +55,17 @@ async def register(user: UserCreate) -> User:
 
 @app.post("/token")
 async def create_token(form_data: OAuth2PasswordRequestForm = Depends(OAuth2PasswordRequestForm)):
+    """The token creation endpoint
+
+    Args:
+        form_data (OAuth2PasswordRequestForm, optional): The form data to log in to the endpoint. Defaults to Depends(OAuth2PasswordRequestForm).
+
+    Raises:
+        HTTPException: The exception class for fastapi exceptions
+
+    Returns:
+        dict: A dcitionary of the access token and the token type (In this case it is the bearer token)
+    """
     email = form_data.username
     password = form_data.password
     user = await authenticate(email, password)
