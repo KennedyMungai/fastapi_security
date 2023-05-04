@@ -29,3 +29,12 @@ class User(UserBase):
         UserBase (BaseModel): The schema for the users
     """
     id: int
+    
+    
+class UserDb(User):
+    """The Schema for tyhe data to be stored in the database
+
+    Args:
+        User (UserBase): The schema for the data stored in the database
+    """
+    hashed_password: str
