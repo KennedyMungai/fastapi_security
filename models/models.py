@@ -1,7 +1,7 @@
 """The models file"""
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from tortoise import fields, Model
-
+from datetime import datetime
 
 class UserBase(BaseModel):
     """The base model for the user"""
@@ -55,3 +55,18 @@ class UserTortoise(Model):
         """The meta subclass for the UserTortoise model
         """
         table = "users"
+        
+    
+class AccessToken(BaseModel):
+    """The access token schema
+
+    Args:
+        BaseModel (_type_): The base class for the access token
+    """
+    user_id: int
+    access_token: str = Field(default_factory=generate_token)
+    expiration_date: datetime = Field(default_factory=get_expiration_date)
+    
+    class Config:
+        """The configuration subclass for the AccessToken model"""
+        orm_mode = True
