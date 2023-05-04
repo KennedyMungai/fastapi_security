@@ -1,7 +1,9 @@
 """The models file"""
-from pydantic import BaseModel, EmailStr, Field
-from tortoise import fields, Model
 from datetime import datetime
+
+from pydantic import BaseModel, EmailStr, Field
+from tortoise import Model, fields
+
 
 class UserBase(BaseModel):
     """The base model for the user"""
